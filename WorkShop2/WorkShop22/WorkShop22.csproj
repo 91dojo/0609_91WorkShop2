@@ -69,12 +69,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WorkShop2\WorkShop2.csproj">
-      <Project>{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}</Project>
-      <Name>WorkShop2</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

@@ -62,7 +62,6 @@ namespace WorkShop22
             var startTime1 = new DateTime(startTime.Year, startTime.Month, 1);
             var endTime1 = new DateTime(endTime.Year, endTime.Month, 1);
             return startTime1.AddMonths(2) < endTime1;
-            return endTime.Month - startTime.Month >= 2;
         }
 
         private static int CaluateBudget(DateTime startTime, DateTime endTime, List<Budget> budgets)

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkShop2", "WorkShop2\WorkShop2.csproj", "{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkShop22", "WorkShop22\WorkShop22.csproj", "{6DE1D599-5B96-41A8-A07D-658D67F09995}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{232E7D33-494F-4C3C-8793-EB23CCFD5C9F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DE1D599-5B96-41A8-A07D-658D67F09995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6DE1D599-5B96-41A8-A07D-658D67F09995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DE1D599-5B96-41A8-A07D-658D67F09995}.Release|Any CPU.ActiveCfg = Release|Any CPU
