@@ -4,12 +4,12 @@ using WorkShop2.Tests;
 
 namespace WorkShop22
 {
-    public class BudgetCalculate
+    public class BudgetCalculator
     {
         private static IRepository<Budget> _budRepository;
         private decimal _result = 0m;
 
-        public BudgetCalculate(IRepository<Budget> budRepository)
+        public BudgetCalculator(IRepository<Budget> budRepository)
         {
             _budRepository = budRepository;
         }
