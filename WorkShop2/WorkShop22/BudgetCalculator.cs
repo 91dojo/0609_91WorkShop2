@@ -4,6 +4,23 @@ using WorkShop2.Tests;
 
 namespace WorkShop22
 {
+    public class Period
+    {
+        public Period(DateTime startTime, DateTime endTime)
+        {
+            StartTime = startTime;
+            EndTime = endTime;
+        }
+
+        public DateTime StartTime { get; private set; }
+        public DateTime EndTime { get; private set; }
+
+        public bool IsInvaildPeriod()
+        {
+            return StartTime > EndTime;
+        }
+    }
+
     public class BudgetCalculator
     {
         private static IRepository<Budget> _budgetRepository;
@@ -16,7 +33,8 @@ namespace WorkShop22
 
         internal decimal Result(DateTime startTime, DateTime endTime)
         {
-            if (IsInvaildPeriod(startTime, endTime))
+            var period = new Period(startTime, endTime);
+            if (period.IsInvaildPeriod())
             {
                 throw new ArgumentException();
             }
@@ -68,11 +86,6 @@ namespace WorkShop22
         private static DateTime startDayOfEndTimeMonth(DateTime endTime)
         {
             return new DateTime(endTime.Year, endTime.Month, 1);
-        }
-
-        private static bool IsInvaildPeriod(DateTime startTime, DateTime endTime)
-        {
-            return startTime > endTime;
         }
 
         private static bool IsOver2Months(DateTime startTime, DateTime endTime)
