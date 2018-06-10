@@ -16,5 +16,11 @@ namespace WorkShop2.Tests
         {
             return DateTime.DaysInMonth(Firstday.Year,Firstday.Month);
         }
+
+        public int DailyAmount()
+        {
+            var dailyAmount = Amount / DaysInMonth();
+            return dailyAmount;
+        }
     }
 }
