@@ -129,11 +129,11 @@ namespace WorkShop2.Tests
         public void ThrowExpection()
         {
 
-            var result = _budgetCalculator.Result(new DateTime(2018, 5, 1), new DateTime(2018, 4, 30));
+            var result = _budgetCalculator.TotalAmount(new DateTime(2018, 5, 1), new DateTime(2018, 4, 30));
         }
         private void BudgetResultShouldBe(DateTime startTime, DateTime endTime, decimal expected)
         {
-            var actual = _budgetCalculator.Result(startTime, endTime);
+            var actual = _budgetCalculator.TotalAmount(startTime, endTime);
             Assert.AreEqual(expected, actual);
         }
 

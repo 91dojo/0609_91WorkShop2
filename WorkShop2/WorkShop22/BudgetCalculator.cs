@@ -14,12 +14,12 @@ namespace WorkShop22
             _budgetRepository = budgetRepository;
         }
 
-        internal decimal Result(DateTime startTime, DateTime endTime)
+        internal decimal TotalAmount(DateTime startTime, DateTime endTime)
         {
             var period = new Period(startTime, endTime);
            
 
-            if (startTime.Month == endTime.Month)
+            if (period.IsSameMonth())
             {
                 return CaluateBudget(startTime, endTime, GetMonthlyTotalBudget(startTime));
             }
@@ -52,6 +52,8 @@ namespace WorkShop22
             }
             return _result;
         }
+
+     
 
         private static int LastMonthBudget(DateTime endTime)
         {
