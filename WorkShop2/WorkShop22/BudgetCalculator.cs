@@ -17,10 +17,7 @@ namespace WorkShop22
         internal decimal Result(DateTime startTime, DateTime endTime)
         {
             var period = new Period(startTime, endTime);
-            if (period.IsInvaildPeriod())
-            {
-                throw new ArgumentException();
-            }
+           
 
             if (startTime.Month == endTime.Month)
             {
