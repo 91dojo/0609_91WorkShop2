@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WorkShop2.Tests;
 
@@ -17,10 +18,9 @@ namespace WorkShop22
         internal decimal TotalAmount(DateTime startTime, DateTime endTime)
         {
             var period = new Period(startTime, endTime);
-
+            var budgets = _budgetRepository.GetBudgets();
             if (period.IsSameMonth())
             {
-                var budgets = _budgetRepository.GetBudgets();
                 var budget = budgets.SingleOrDefault(x => x.YearMonth == period.StartTime.ToString("yyyyMM"));
                 if (budget == null)
                 {
@@ -29,37 +29,32 @@ namespace WorkShop22
                 return period.Days() * budget.DailyAmount();
             }
 
-            _result += FirstMonthBudget(period.StartTime);
-            _result += LastMonthBudget(period.EndTime);
-            if (IsOver2Months(period.StartTime, period.EndTime))
-            {
-                var targetStartTime = new DateTime(period.StartTime.Year, period.StartTime.Month, 1);
-                var targetEndTime = new DateTime(period.EndTime.Year, period.EndTime.Month, 1).AddMonths(-1);
-                while (targetStartTime < targetEndTime)
-                {
-                    targetStartTime = targetStartTime.AddMonths(1);
-                    var currentStartTime = new DateTime(targetStartTime.Year, targetStartTime.Month, 1);
-                    var currentEndTime = new DateTime(targetStartTime.Year, targetStartTime.Month, DateTime.DaysInMonth(targetStartTime.Year, targetStartTime.Month));
-                    _result += CalculateBudget(currentStartTime, currentEndTime);
-
-                }
-            }
-            return _result;
-
-            DateTime Counter = new DateTime(period.StartTime.Year, period.StartTime.Month, 1);
-            if (IsOver2Months(period.StartTime, period.EndTime))
-            {
-                do
-                {
-                    DateTime startTime2 = Counter.AddMonths(1);
-                    _result += CalculateBudget(startTime2, Counter.AddMonths(2).AddDays(-1));
-                    Counter = Counter.AddMonths(1);
-                } while (Counter.Month != period.EndTime.AddMonths(-1).Month);
-            }
-            return _result;
+            var currentTime = period.StartTime;
+            return TotalAmountWhenMultiMonth(currentTime, period, budgets);
         }
 
-     
+        private static decimal TotalAmountWhenMultiMonth(DateTime currentTime, Period period, List<Budget> budgets)
+        {
+            var total = 0;
+            while (currentTime <= period.EndTime.AddMonths(1))
+            {
+                var budget = budgets.SingleOrDefault(x => x.YearMonth == currentTime.ToString("yyyyMM"));
+                if (budget != null)
+                {
+                    var overlapStart = period.StartTime.ToString("yyyyMM") == currentTime.ToString("yyyyMM")
+                        ? period.StartTime
+                        : budget.Firstday;
+                    var overlapEnd = period.EndTime.ToString("yyyyMM") == currentTime.ToString("yyyyMM")
+                        ? period.EndTime
+                        : budget.LastDay;
+
+                    var effectAmount = CalculateBudget(overlapStart, overlapEnd);
+                    total += effectAmount;
+                }
+                currentTime = currentTime.AddMonths(1);
+            }
+            return total;
+        }
 
         private static int LastMonthBudget(DateTime endTime)
         {
