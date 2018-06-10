@@ -119,6 +119,17 @@ namespace WorkShop2.Tests
             BudgetResultShouldBe(new DateTime(2017, 11, 1), new DateTime(2018, 6, 30), 580m);
         }
         [TestMethod()]
+        public void OverThreeYearBudget_EndYearHas2Budget()
+        {
+            GiveBudgets(new List<Budget>()
+            {
+                new Budget() {YearMonth = "201802", Amount = 280},
+                new Budget() {YearMonth = "201806", Amount = 300},
+                new Budget() {YearMonth = "201807", Amount = 310}
+            });
+            BudgetResultShouldBe(new DateTime(2017, 11, 1), new DateTime(2019, 1, 30), 890m);
+        }
+        [TestMethod()]
         public void AllYearBudget()
         {
             GiveBudgets(new List<Budget>()

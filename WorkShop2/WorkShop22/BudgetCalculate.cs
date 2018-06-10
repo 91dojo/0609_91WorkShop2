@@ -27,8 +27,22 @@ namespace WorkShop22
             }
             _result += FirstMonthBudget(startTime);
             _result += LastMonthBudget(endTime);
+            if (IsOver2Months(startTime, endTime))
+            {
+                var targetStartTime = new DateTime(startTime.Year, startTime.Month, 1);
+                var targetEndTime = new DateTime(endTime.Year, endTime.Month, 1).AddMonths(-1);
+                while (targetStartTime < targetEndTime)
+                {
+                    targetStartTime = targetStartTime.AddMonths(1);
+                    var currentStartTime = new DateTime(targetStartTime.Year, targetStartTime.Month, 1);
+                    var currentEndTime = new DateTime(targetStartTime.Year, targetStartTime.Month, DateTime.DaysInMonth(targetStartTime.Year, targetStartTime.Month));
+                    _result += CaluateBudget(currentStartTime, currentEndTime, GetMonthlyTotalBudget(currentStartTime));
 
-            DateTime Counter = new DateTime(startTime.Year,startTime.Month,1);
+                }
+            }
+            return _result;
+
+            DateTime Counter = new DateTime(startTime.Year, startTime.Month, 1);
             if (IsOver2Months(startTime, endTime))
             {
                 do
