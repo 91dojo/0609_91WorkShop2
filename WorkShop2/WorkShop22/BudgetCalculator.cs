@@ -85,7 +85,7 @@ namespace WorkShop22
             {
                 return 0;
             }
-            return new Period(startTime, endTime).Days() * budget.Amount / DateTime.DaysInMonth(startTime.Year, startTime.Month);
+            return new Period(startTime, endTime).Days() * budget.Amount / budget.DaysInMonth();
         }
 
         private static int GetMonthlyTotalBudget(DateTime time)
