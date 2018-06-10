@@ -20,7 +20,13 @@ namespace WorkShop22
 
             if (period.IsSameMonth())
             {
-                return CalculateBudget(period.StartTime, period.EndTime);
+                var budgets = _budgetRepository.GetBudgets();
+                var budget = budgets.SingleOrDefault(x => x.YearMonth == period.StartTime.ToString("yyyyMM"));
+                if (budget == null)
+                {
+                    return 0;
+                }
+                return period.Days() * budget.DailyAmount();
             }
 
             _result += FirstMonthBudget(period.StartTime);
