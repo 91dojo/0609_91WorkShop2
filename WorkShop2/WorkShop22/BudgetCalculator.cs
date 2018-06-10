@@ -21,7 +21,7 @@ namespace WorkShop22
 
             if (period.IsSameMonth())
             {
-                return CaluateBudget(startTime, endTime, GetMonthlyTotalBudget(startTime));
+                return CalculateBudget(startTime, endTime);
             }
             _result += FirstMonthBudget(startTime);
             _result += LastMonthBudget(endTime);
@@ -34,7 +34,7 @@ namespace WorkShop22
                     targetStartTime = targetStartTime.AddMonths(1);
                     var currentStartTime = new DateTime(targetStartTime.Year, targetStartTime.Month, 1);
                     var currentEndTime = new DateTime(targetStartTime.Year, targetStartTime.Month, DateTime.DaysInMonth(targetStartTime.Year, targetStartTime.Month));
-                    _result += CaluateBudget(currentStartTime, currentEndTime, GetMonthlyTotalBudget(currentStartTime));
+                    _result += CalculateBudget(currentStartTime, currentEndTime);
 
                 }
             }
@@ -46,7 +46,7 @@ namespace WorkShop22
                 do
                 {
                     DateTime startTime2 = Counter.AddMonths(1);
-                    _result += CaluateBudget(startTime2, Counter.AddMonths(2).AddDays(-1), GetMonthlyTotalBudget(startTime2));
+                    _result += CalculateBudget(startTime2, Counter.AddMonths(2).AddDays(-1));
                     Counter = Counter.AddMonths(1);
                 } while (Counter.Month != endTime.AddMonths(-1).Month);
             }
@@ -57,12 +57,12 @@ namespace WorkShop22
 
         private static int LastMonthBudget(DateTime endTime)
         {
-            return CaluateBudget(startDayOfEndTimeMonth(endTime), endTime, GetMonthlyTotalBudget(startDayOfEndTimeMonth(endTime)));
+            return CalculateBudget(startDayOfEndTimeMonth(endTime), endTime);
         }
 
         private static int FirstMonthBudget(DateTime startTime)
         {
-            return CaluateBudget(startTime, new DateTime(startTime.Year, startTime.Month, DateTime.DaysInMonth(startTime.Year, startTime.Month)), GetMonthlyTotalBudget(startTime));
+            return CalculateBudget(startTime, new DateTime(startTime.Year, startTime.Month, DateTime.DaysInMonth(startTime.Year, startTime.Month)));
         }
 
         private static DateTime startDayOfEndTimeMonth(DateTime endTime)
@@ -77,9 +77,11 @@ namespace WorkShop22
             return startTime1.AddMonths(2) < endTime1;
         }
 
-        private static int CaluateBudget(DateTime startTime, DateTime endTime, int budget)
+        private static int CalculateBudget(DateTime startTime, DateTime endTime)
         {
-            return (endTime.Subtract(startTime).Days + 1) * budget / DateTime.DaysInMonth(startTime.Year, startTime.Month);
+            var budgets = _budgetRepository.GetBudgets();
+            var budget= budgets.SingleOrDefault(x => x.YearMonth == startTime.ToString("yyyyMM"))?.Amount ?? 0;
+            return new Period(startTime, endTime).Days() * budget / DateTime.DaysInMonth(startTime.Year, startTime.Month);
         }
 
         private static int GetMonthlyTotalBudget(DateTime time)
