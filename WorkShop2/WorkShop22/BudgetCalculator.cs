@@ -51,15 +51,7 @@ namespace WorkShop22
 
         private static int EffectAmount(Period period, Budget budget)
         {
-            var overlapStart = period.StartTime.ToString("yyyyMM") == budget.YearMonth
-                ? period.StartTime
-                : budget.Firstday;
-            var overlapEnd = period.EndTime.ToString("yyyyMM") == budget.YearMonth
-                ? period.EndTime
-                : budget.LastDay;
-
-            var effectAmount = CalculateBudget(overlapStart, overlapEnd, budget);
-            return effectAmount;
+            return period.OverlapDay(budget) * budget.DailyAmount();
         }
 
 
@@ -73,16 +65,6 @@ namespace WorkShop22
             var startTime1 = new DateTime(startTime.Year, startTime.Month, 1);
             var endTime1 = new DateTime(endTime.Year, endTime.Month, 1);
             return startTime1.AddMonths(2) < endTime1;
-        }
-
-        private static int CalculateBudget(DateTime startTime, DateTime endTime, Budget singleOrDefault)
-        {
-            var budgets = _budgetRepository.GetBudgets();
-            if (singleOrDefault == null)
-            {
-                return 0;
-            }
-            return new Period(startTime, endTime).Days() * singleOrDefault.DailyAmount();
         }
 
         private static int GetMonthlyTotalBudget(DateTime time)
