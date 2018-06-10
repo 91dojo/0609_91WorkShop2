@@ -28,7 +28,7 @@ namespace WorkShop22
             _result += FirstMonthBudget(startTime);
             _result += LastMonthBudget(endTime);
 
-            DateTime Counter = startTime;
+            DateTime Counter = new DateTime(startTime.Year,startTime.Month,1);
             if (IsOver2Months(startTime, endTime))
             {
                 do

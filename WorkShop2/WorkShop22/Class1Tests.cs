@@ -11,10 +11,6 @@ namespace WorkShop2.Tests
         private IRepository<Budget> _budRepository = Substitute.For<IRepository<Budget>>();
         private WorkShop22.BudgetCalculate _budgetCalculate;
 
-        public Class1Tests()
-        {
-
-        }
 
         [TestInitialize]
         public void TestInit()
@@ -99,6 +95,17 @@ namespace WorkShop2.Tests
                 new Budget() {YearMonth = "201807", Amount = 310}
             });
             BudgetResultShouldBe(new DateTime(2017, 12, 1), new DateTime(2018, 2, 1), 10m);
+        }
+        [TestMethod()]
+        public void OverYearBudget_StartDayBiggerThanEndDay()
+        {
+            GiveBudgets(new List<Budget>()
+            {
+                new Budget() {YearMonth = "201802", Amount = 280},
+                new Budget() {YearMonth = "201806", Amount = 300},
+                new Budget() {YearMonth = "201807", Amount = 310}
+            });
+            BudgetResultShouldBe(new DateTime(2017, 10, 10), new DateTime(2018, 6, 9), 370m);
         }
         [TestMethod()]
         public void OverYearBudget_EndYearHas2Budget()
