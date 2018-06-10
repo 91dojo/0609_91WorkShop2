@@ -6,17 +6,17 @@ namespace WorkShop22
 {
     public class BudgetCalculator
     {
-        private static IRepository<Budget> _budRepository;
+        private static IRepository<Budget> _budgetRepository;
         private decimal _result = 0m;
 
-        public BudgetCalculator(IRepository<Budget> budRepository)
+        public BudgetCalculator(IRepository<Budget> budgetRepository)
         {
-            _budRepository = budRepository;
+            _budgetRepository = budgetRepository;
         }
 
         internal decimal Result(DateTime startTime, DateTime endTime)
         {
-            if (IsInputError(startTime, endTime))
+            if (IsInvaildPeriod(startTime, endTime))
             {
                 throw new ArgumentException();
             }
@@ -70,7 +70,7 @@ namespace WorkShop22
             return new DateTime(endTime.Year, endTime.Month, 1);
         }
 
-        private static bool IsInputError(DateTime startTime, DateTime endTime)
+        private static bool IsInvaildPeriod(DateTime startTime, DateTime endTime)
         {
             return startTime > endTime;
         }
@@ -89,7 +89,7 @@ namespace WorkShop22
 
         private static int GetMonthlyTotalBudget(DateTime time)
         {
-            var budgets = _budRepository.GetBudgets();
+            var budgets = _budgetRepository.GetBudgets();
             return budgets.SingleOrDefault(x => x.YearMonth == time.ToString("yyyyMM"))?.Amount ?? 0;
         }
     }
