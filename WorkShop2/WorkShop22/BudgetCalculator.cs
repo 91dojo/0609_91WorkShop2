@@ -41,14 +41,7 @@ namespace WorkShop22
                 var budget = budgets.SingleOrDefault(x => x.YearMonth == currentTime.ToString("yyyyMM"));
                 if (budget != null)
                 {
-                    var overlapStart = period.StartTime.ToString("yyyyMM") == currentTime.ToString("yyyyMM")
-                        ? period.StartTime
-                        : budget.Firstday;
-                    var overlapEnd = period.EndTime.ToString("yyyyMM") == currentTime.ToString("yyyyMM")
-                        ? period.EndTime
-                        : budget.LastDay;
-
-                    var effectAmount = CalculateBudget(overlapStart, overlapEnd);
+                    var effectAmount = EffectAmount(period, budget);
                     total += effectAmount;
                 }
                 currentTime = currentTime.AddMonths(1);
@@ -56,15 +49,19 @@ namespace WorkShop22
             return total;
         }
 
-        private static int LastMonthBudget(DateTime endTime)
+        private static int EffectAmount(Period period, Budget budget)
         {
-            return CalculateBudget(startDayOfEndTimeMonth(endTime), endTime);
+            var overlapStart = period.StartTime.ToString("yyyyMM") == budget.YearMonth
+                ? period.StartTime
+                : budget.Firstday;
+            var overlapEnd = period.EndTime.ToString("yyyyMM") == budget.YearMonth
+                ? period.EndTime
+                : budget.LastDay;
+
+            var effectAmount = CalculateBudget(overlapStart, overlapEnd, budget);
+            return effectAmount;
         }
 
-        private static int FirstMonthBudget(DateTime startTime)
-        {
-            return CalculateBudget(startTime, new DateTime(startTime.Year, startTime.Month, DateTime.DaysInMonth(startTime.Year, startTime.Month)));
-        }
 
         private static DateTime startDayOfEndTimeMonth(DateTime endTime)
         {
@@ -78,15 +75,14 @@ namespace WorkShop22
             return startTime1.AddMonths(2) < endTime1;
         }
 
-        private static int CalculateBudget(DateTime startTime, DateTime endTime)
+        private static int CalculateBudget(DateTime startTime, DateTime endTime, Budget singleOrDefault)
         {
             var budgets = _budgetRepository.GetBudgets();
-            var budget = budgets.SingleOrDefault(x => x.YearMonth == startTime.ToString("yyyyMM"));
-            if (budget == null)
+            if (singleOrDefault == null)
             {
                 return 0;
             }
-            return new Period(startTime, endTime).Days() * budget.DailyAmount();
+            return new Period(startTime, endTime).Days() * singleOrDefault.DailyAmount();
         }
 
         private static int GetMonthlyTotalBudget(DateTime time)
